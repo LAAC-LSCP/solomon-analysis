@@ -34,7 +34,7 @@ recordings = project.recordings.merge(min_durations, left_on = ['child_id', 'dat
 
 # compute derived metrics for every vtc annotation
 am = AnnotationManager(project)
-am.annotations = am.annotations.merge(recordings[['filename', 'min_duration']], left_on = 'recording_filename', right_on = 'filename')
+am.annotations = am.annotations.merge(recordings[['filename', 'min_duration', 'duration']], left_on = 'recording_filename', right_on = 'filename')
 
 vtc = am.annotations[am.annotations['set'] == 'vtc']
 vtc = vtc[vtc['error'].isnull()]
