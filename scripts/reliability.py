@@ -1,10 +1,6 @@
 import os
 import pandas as pd
 import sys
-import multiprocessing as mp
-import numpy as np
-from functools import partial
-import sox
 
 from ChildProject.projects import ChildProject
 from ChildProject.annotations import AnnotationManager, Segment
