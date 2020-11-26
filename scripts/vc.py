@@ -12,23 +12,6 @@ from ChildProject.annotations import AnnotationManager
 project = ChildProject(sys.argv[1])
 project.read()
 
-# compute the minimum audio duration for each pair of recordings
-def get_audio_duration(filename):
-    if not os.path.exists(filename):
-        return 0
-
-    duration = 0
-    try:
-        duration = sox.file_info.duration(filename)
-    except:
-        pass
-
-    return duration
-
-project.recordings['duration'] = project.recordings['filename'].map(lambda f:
-    get_audio_duration(os.path.join(project.path, 'recordings', f))
-)
-
 min_durations = project.recordings.groupby(['child_id', 'date_iso'])['duration'].min().reset_index().rename(columns = {'duration': 'min_duration'})
 recordings = project.recordings.merge(min_durations, left_on = ['child_id', 'date_iso'], right_on = ['child_id', 'date_iso'])
 
