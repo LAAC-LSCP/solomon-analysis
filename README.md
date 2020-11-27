@@ -22,9 +22,9 @@ datalad run-procedure setup f-oberon #this step needs to be revised depending on
 datalad get annotations
 ```
 
-Then navigate to the solomon-analysis/scripts and launch vc.py like this:
+Then navigate to the solomon-analysis and launch vc.py like this:
 
-`python vc.py $DATA`
+`python scripts/vc.py $DATA`
 
 where $DATA is the absolute path to your local copy of the solomon-data
 
