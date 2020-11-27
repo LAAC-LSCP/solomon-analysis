@@ -4,7 +4,7 @@
 
 **Before anything, you need to install the [ChildProject package](https://github.com/LAAC-LSCP/ChildRecordsData#installation)**
 
-### Setup the data
+### Setup
 
 ```
 datalad install -r https://github.com/LAAC-LSCP/solomon-analysis.git
@@ -17,7 +17,7 @@ datalad get annotations
 
 ```
 cd ..
-python scripts/vc.py
+python scripts/vc.py solomon-data
 ```
 
 
