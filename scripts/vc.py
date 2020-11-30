@@ -34,15 +34,14 @@ def get_stats(am, af):
     
     return df
 
-if not os.path.exists('output/all_stats.csv'):
-    pool = mp.Pool()
-    all_stats = pool.map(
-        partial(get_stats, am),
-        vtc['annotation_filename'].tolist()
-    )
+pool = mp.Pool()
+all_stats = pool.map(
+    partial(get_stats, am),
+    vtc['annotation_filename'].tolist()
+)
 
-    all_stats = pd.concat(all_stats)
-    all_stats = all_stats.merge(vtc[['annotation_filename', 'recording_filename']], how = 'left', left_on = 'annotation_filename', right_on = 'annotation_filename')
-    all_stats = all_stats.merge(recordings[['filename', 'child_id', 'date_iso', 'min_duration']], how = 'left', left_on = 'recording_filename', right_on = 'filename')
-    all_stats.sort_values(['child_id', 'date_iso', 'recording_filename', 'annotation_filename'], inplace = True)
-    all_stats.to_csv('output/all_stats.csv', index = False)
+all_stats = pd.concat(all_stats)
+all_stats = all_stats.merge(vtc[['annotation_filename', 'recording_filename']], how = 'left', left_on = 'annotation_filename', right_on = 'annotation_filename')
+all_stats = all_stats.merge(recordings[['filename', 'child_id', 'date_iso', 'min_duration']], how = 'left', left_on = 'recording_filename', right_on = 'filename')
+all_stats.sort_values(['child_id', 'date_iso', 'recording_filename', 'annotation_filename'], inplace = True)
+all_stats.to_csv('output/all_stats.csv', index = False)
