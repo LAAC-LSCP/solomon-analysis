@@ -30,12 +30,21 @@ def segments_to_pyannote(segments, column = 'speaker_type', ignore = []):
 set_a, set_b = sys.argv[2], sys.argv[3]
 project = ChildProject(sys.argv[1])
 am = AnnotationManager(project)
+am.annotations = am.annotations.merge(
+    project.recordings[['filename', 'duration']],
+    how = 'left',
+    left_on = 'recording_filename',
+    right_on = 'filename'
+)
 
 a = am.annotations[am.annotations['set'] == set_a]
 b = am.annotations[am.annotations['set'] == set_b]
 
-a.loc[a.range_offset == 0, 'range_offset'] = 100000
-b.loc[b.range_offset == 0, 'range_offset'] = 100000
+a = a[a['duration'] > 0]
+b = b[b['duration'] > 0]
+
+a['range_offset'] = a.apply(lambda r: r['range_offset'] if r['range_offset'] > 0 else r['duration'], axis = 1)
+b['range_offset'] = b.apply(lambda r: r['range_offset'] if r['range_offset'] > 0 else r['duration'], axis = 1)
 
 a, b = am.intersection(a, b)
 
@@ -52,7 +61,7 @@ for left, right in zip(a, b):
     left_segments = am.clip_segments(left_segments, left_segments['range_onset'], left_segments['range_offset'])
     right_segments = am.clip_segments(right_segments, right_segments['range_onset'], right_segments['range_offset'])
 
-    metric = identification.IdentificationErrorRate(parallel = True)
+    metric = identification.IdentificationErrorRate(parallel = True, collar = 0.250)
     ref = segments_to_pyannote(left_segments, ignore = ['SPEECH'])
     hyp = segments_to_pyannote(right_segments, ignore = ['SPEECH'])
 
