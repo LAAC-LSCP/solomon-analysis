@@ -4,32 +4,25 @@
 
 **Before anything, you need to install the [ChildProject package](https://github.com/LAAC-LSCP/ChildRecordsData#installation)**
 
-### Install solomon's dataset
-
-Read the instructions to install a dataset [here](https://laac-lscp.github.io/ChildRecordsData/PROJECTS.html#installing-a-dataset).
-
-Once the dataset has been installed, `cd` into it and retrieve the annotations :
+### Setup
 
 ```
-# Install the dataset
-child-project import-data https://github.com/LAAC-LSCP/solomon-data.git --destination /path/to/solomon/dataset --storage-hostname foberon
-
-Remember that if you have an identification error, your GitHub SSH keys may not be set up properly. See instructions to fix that [here](https://jdblischak.github.io/2014-09-18-chicago/novice/git/05-sshkeys.html).
-
-# Fetch annotations from Oberon
+datalad install -r https://github.com/LAAC-LSCP/solomon-analysis.git
 cd solomon-data
+datalad run-procedure setup oberon
 datalad get annotations
 ```
 
-### Run the analysis
+- **Replace `oberon` by whatever alias you use to ssh into oberon if it is different. The ssh hostname should be configured into your ssh config file, usually in `~/.ssh/config`. Instructions on how to configure your ssh access to Oberon are available [here](https://wiki.syntheticlearner.net/Computer_resources/ssh_conf.html).**
+- Remember that if you have an identification error, your GitHub SSH keys may not be set up properly. See instructions to fix that [here](https://jdblischak.github.io/2014-09-18-chicago/novice/git/05-sshkeys.html).
 
-1. `cd` into your local solomon-analysis repository after cloning it
-2. Generate the metrics :
 
+### Run the scripts
+
+From the root of the repository:
+
+```bash
+python scripts/vc.py solomon-data       # compute vocalization counts and other statistics for each recording
 ```
-python scripts/vc.py /path/to/solomon/dataset
-```
-
-
 
 
