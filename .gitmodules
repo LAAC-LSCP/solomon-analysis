@@ -1,0 +1,3 @@
+[submodule "solomon-data"]
+	path = solomon-data
+	url = git@github.com:LAAC-LSCP/solomon-data.git
